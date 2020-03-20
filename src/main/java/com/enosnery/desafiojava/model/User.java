@@ -1,11 +1,9 @@
 package com.enosnery.desafiojava.model;
 
 import com.enosnery.desafiojava.request.AddUserRequest;
+import org.springframework.util.DigestUtils;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +14,10 @@ import java.util.UUID;
 public class User {
 
     @Id
-    private UUID guid = UUID.randomUUID();
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+
+    private UUID uuid = UUID.randomUUID();
 
     private String name;
 
@@ -41,18 +42,27 @@ public class User {
     public User(AddUserRequest form){
         this.email = form.email;
         this.name = form.name;
-        this.password = form.password;
+        this.password = DigestUtils.md5DigestAsHex(form.password.getBytes());
         this.phones = new ArrayList<>();
         this.modified = new Date();
         this.lastLogin = new Date();
+        this.token = UUID.randomUUID().toString();
     }
 
-    public UUID getGuid() {
-        return guid;
+    public int getId() {
+        return id;
     }
 
-    public void setGuid(UUID guid) {
-        this.guid = guid;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID guid) {
+        this.uuid = guid;
     }
 
     public String getName() {
