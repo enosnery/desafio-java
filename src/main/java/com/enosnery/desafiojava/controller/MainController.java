@@ -3,6 +3,7 @@ package com.enosnery.desafiojava.controller;
 import com.enosnery.desafiojava.model.User;
 import com.enosnery.desafiojava.request.AddUserRequest;
 import com.enosnery.desafiojava.request.LoginRequest;
+import com.enosnery.desafiojava.response.ErrorResponse;
 import com.enosnery.desafiojava.response.UserResponse;
 import com.enosnery.desafiojava.service.UserService;
 import com.enosnery.desafiojava.utils.Constants;
@@ -24,7 +25,7 @@ public class MainController {
         if(addUserObject instanceof User){
             return new ResponseEntity<>(new UserResponse((User) addUserObject), HttpStatus.OK);
         }else {
-            return new ResponseEntity<>(Constants.EMAIL_EXISTS, HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>(new ErrorResponse(Constants.EMAIL_EXISTS), HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
@@ -34,7 +35,7 @@ public class MainController {
         if(loginObject instanceof User){
             return new ResponseEntity<>(new UserResponse((User) loginObject), HttpStatus.OK);
         }else {
-            return new ResponseEntity<>(Constants.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new ErrorResponse(Constants.INVALID_USER), HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -44,7 +45,7 @@ public class MainController {
         if(validationObject instanceof User){
             return new ResponseEntity<>(new UserResponse((User) validationObject), HttpStatus.OK);
         }else {
-            return new ResponseEntity<>((String) validationObject, HttpStatus.OK);
+            return new ResponseEntity<>(new ErrorResponse((String) validationObject), HttpStatus.OK);
         }
     }
 
